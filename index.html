@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WikiLoan · Tout comprendre sur le crédit hypothécaire en Belgique</title>
+<meta name="description" content="Simulateurs gratuits, guides pratiques et articles pour comprendre votre crédit hypothécaire en Belgique. Droits d'enregistrement, capacité d'emprunt, dossier de crédit — WikiLoan vous accompagne.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1A1F2E;
+  --ink2: #2D3548;
+  --ink3: #5A6378;
+  --ink4: #9AA0B0;
+  --bg: #F8F7F4;
+  --bg2: #F0EEE8;
+  --bg3: #E4E0D8;
+  --teal: #0F6E6E;
+  --teal2: #1A9090;
+  --teal3: #4DB8B8;
+  --teal-pale: #E0F4F4;
+  --teal-pale2: #C0E8E8;
+  --white: #fff;
+  --amber: #B87D20;
+  --amber-pale: #FDF3E0;
+  --r: 4px;
+  --r2: 8px;
+  --r3: 14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65;}
+
+/* ── NAV ── */
+nav{background:var(--white);height:60px;display:flex;align-items:center;padding:0 6%;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--bg3);}
+.nav-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.02em;flex-shrink:0;}
+.nav-logo span{color:var(--teal2);}
+.nav-links{display:flex;gap:24px;margin-left:auto;}
+.nav-links a{color:var(--ink3);text-decoration:none;font-size:14px;font-weight:400;transition:color .2s;}
+.nav-links a:hover{color:var(--teal2);}
+.nav-sim{background:var(--teal2);color:var(--white)!important;padding:8px 18px;border-radius:var(--r);font-weight:500!important;transition:background .2s!important;}
+.nav-sim:hover{background:var(--teal3)!important;}
+.nav-pro{font-size:13px!important;color:var(--ink4)!important;border:1px solid var(--bg3);padding:6px 12px;border-radius:var(--r);}
+.nav-pro:hover{color:var(--teal2)!important;border-color:var(--teal2)!important;}
+
+/* ── HERO ── */
+.hero{background:var(--white);padding:72px 6% 0;border-bottom:1px solid var(--bg3);overflow:hidden;}
+.hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:end;}
+.hero-left{padding-bottom:72px;}
+.hero-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal2);font-weight:500;margin-bottom:16px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(36px,5.5vw,64px);font-weight:700;color:var(--ink);line-height:1.06;letter-spacing:-.02em;margin-bottom:20px;}
+.hero h1 em{color:var(--teal2);font-style:normal;}
+.hero-sub{color:var(--ink3);font-size:17px;font-weight:300;max-width:500px;margin-bottom:36px;line-height:1.75;}
+.hero-search{display:flex;gap:0;margin-bottom:32px;max-width:480px;}
+.hero-search-inp{flex:1;padding:13px 16px;border:1.5px solid var(--bg3);border-right:none;border-radius:var(--r) 0 0 var(--r);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s;}
+.hero-search-inp:focus{border-color:var(--teal2);background:var(--white);}
+.hero-search-btn{padding:13px 20px;background:var(--teal2);color:var(--white);border:none;border-radius:0 var(--r) var(--r) 0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.hero-search-btn:hover{background:var(--teal3);}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.hero-tag{padding:6px 12px;background:var(--bg2);border-radius:20px;font-size:12px;color:var(--ink3);cursor:pointer;transition:background .18s,color .18s;}
+.hero-tag:hover{background:var(--teal-pale);color:var(--teal);}
+
+/* Hero right - sim card */
+.hero-right{position:relative;}
+.hero-sim-card{background:var(--bg);border:1px solid var(--bg3);border-bottom:none;border-radius:var(--r3) var(--r3) 0 0;padding:28px;margin-bottom:0;}
+.hero-sim-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.hero-sim-sub{font-size:12px;color:var(--ink4);margin-bottom:20px;}
+.hs-field{margin-bottom:12px;}
+.hs-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);font-weight:500;margin-bottom:5px;display:block;}
+.hs-inp,.hs-sel{width:100%;padding:10px 12px;border:1px solid var(--bg3);border-radius:var(--r);background:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;-moz-appearance:textfield;}
+.hs-inp::-webkit-inner-spin-button{-webkit-appearance:none;}
+.hs-inp:focus,.hs-sel:focus{border-color:var(--teal2);}
+.hs-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hs-btn{width:100%;padding:12px;background:var(--teal2);color:var(--white);border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;margin-top:4px;}
+.hs-btn:hover{background:var(--teal3);}
+.hs-result{margin-top:12px;padding:12px 14px;background:var(--teal-pale);border-radius:var(--r2);display:none;}
+.hs-result-val{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--ink);}
+.hs-result-sub{font-size:11px;color:var(--ink3);margin-top:2px;}
+
+/* ── SIMULATEURS ── */
+.sim-section{background:var(--bg2);padding:72px 6%;}
+.sim-inner{max-width:1140px;margin:0 auto;}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal2);font-weight:500;margin-bottom:10px;}
+.h2{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,42px);font-weight:700;color:var(--ink);line-height:1.12;letter-spacing:-.02em;margin-bottom:12px;}
+.lead{color:var(--ink3);font-size:16px;font-weight:300;line-height:1.75;max-width:580px;}
+
+.sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.sim-card{background:var(--white);border:1px solid var(--bg3);border-radius:var(--r3);padding:28px;transition:border-color .2s,box-shadow .2s,transform .2s;cursor:pointer;text-decoration:none;display:block;position:relative;}
+.sim-card:hover{border-color:var(--teal-pale2);box-shadow:0 8px 32px rgba(26,31,46,.07);transform:translateY(-2px);}
+.sim-card.soon{opacity:.6;cursor:default;}
+.sim-card.soon:hover{transform:none;box-shadow:none;border-color:var(--bg3);}
+.sim-card-icon{width:48px;height:48px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;}
+.sim-card-name{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px;line-height:1.3;}
+.sim-card-desc{font-size:13px;color:var(--ink3);font-weight:300;line-height:1.6;margin-bottom:16px;}
+.sim-card-tag{font-size:11px;padding:3px 10px;border-radius:3px;font-weight:500;display:inline-block;}
+.tag-live{background:var(--teal-pale);color:var(--teal);}
+.tag-soon{background:var(--bg2);color:var(--ink4);}
+.sim-card-arrow{position:absolute;bottom:24px;right:24px;font-size:16px;color:var(--teal2);opacity:0;transition:opacity .2s;}
+.sim-card:not(.soon):hover .sim-card-arrow{opacity:1;}
+
+/* ── ARTICLES ── */
+.articles-section{background:var(--white);padding:72px 6%;}
+.articles-inner{max-width:1140px;margin:0 auto;}
+.articles-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;}
+.articles-see-all{font-size:13px;color:var(--teal2);text-decoration:none;font-weight:500;border-bottom:1px solid var(--teal-pale2);transition:border-color .2s;}
+.articles-see-all:hover{border-color:var(--teal2);}
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.article-card{border:1px solid var(--bg3);border-radius:var(--r3);overflow:hidden;transition:box-shadow .2s,transform .2s;}
+.article-card:hover{box-shadow:0 8px 32px rgba(26,31,46,.07);transform:translateY(-2px);}
+.article-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.article-body{padding:20px;}
+.article-cat{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin-bottom:8px;}
+.article-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:8px;}
+.article-excerpt{font-size:13px;color:var(--ink3);font-weight:300;line-height:1.6;margin-bottom:16px;}
+.article-meta{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink4);}
+.article-read{color:var(--teal2);font-weight:500;text-decoration:none;font-size:13px;}
+.article-read:hover{color:var(--teal);}
+
+/* ── GUIDES ── */
+.guides-section{background:var(--bg2);padding:72px 6%;}
+.guides-inner{max-width:1140px;margin:0 auto;}
+.guides-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px;}
+.guide-card{background:var(--white);border:1px solid var(--bg3);border-radius:var(--r2);padding:20px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color .2s,box-shadow .2s;text-decoration:none;}
+.guide-card:hover{border-color:var(--teal-pale2);box-shadow:0 4px 16px rgba(26,31,46,.06);}
+.guide-icon{font-size:24px;flex-shrink:0;}
+.guide-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:3px;}
+.guide-desc{font-size:12px;color:var(--ink3);font-weight:300;}
+.guide-arrow{margin-left:auto;color:var(--teal2);font-size:16px;flex-shrink:0;}
+
+/* ── PARTENAIRES / AVANTAGES ── */
+.avantages-section{background:var(--teal);padding:72px 6%;}
+.avantages-inner{max-width:1140px;margin:0 auto;}
+.avantages-section .kicker{color:rgba(255,255,255,.6);}
+.avantages-section .h2{color:var(--white);}
+.avantages-section .lead{color:rgba(255,255,255,.6);margin-bottom:40px;}
+.avantages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.avantage-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:var(--r2);padding:24px;transition:background .2s;}
+.avantage-card:hover{background:rgba(255,255,255,.13);}
+.avantage-icon{font-size:24px;margin-bottom:12px;}
+.avantage-title{font-size:15px;font-weight:500;color:var(--white);margin-bottom:6px;}
+.avantage-desc{font-size:13px;color:rgba(255,255,255,.55);font-weight:300;line-height:1.6;margin-bottom:14px;}
+.avantage-tag{font-size:11px;padding:3px 10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:3px;display:inline-block;}
+
+/* ── LEAD CTA ── */
+.cta-section{background:var(--bg);padding:72px 6%;}
+.cta-card{max-width:740px;margin:0 auto;background:var(--white);border:1px solid var(--bg3);border-radius:var(--r3);padding:48px;text-align:center;}
+.cta-title{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px;}
+.cta-sub{font-size:15px;color:var(--ink3);font-weight:300;margin-bottom:32px;}
+.cta-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;}
+.cta-form .full{grid-column:1/-1;}
+.cta-trust{font-size:12px;color:var(--ink4);margin-top:12px;}
+.cta-success{display:none;padding:32px 0;}
+.cta-success-icon{font-size:40px;margin-bottom:12px;}
+.cta-success-title{font-family:'Fraunces',serif;font-size:26px;color:var(--teal);margin-bottom:8px;}
+.cta-success-text{font-size:15px;color:var(--ink3);font-weight:300;}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:48px 6%;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;}
+.footer-col{}
+.footer-logo{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.footer-logo span{color:var(--teal3);}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,.35);font-weight:300;margin-bottom:20px;line-height:1.6;}
+.footer-col-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:500;margin-bottom:14px;}
+.footer-links{display:flex;flex-direction:column;gap:8px;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--teal3);}
+.footer-bottom{background:var(--ink2);padding:16px 6%;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.25);}
+.footer-bottom a{color:rgba(255,255,255,.25);text-decoration:none;}
+
+/* ── TRUST BAR ── */
+.trust-bar{background:var(--ink2);padding:14px 6%;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5);}
+.trust-dot{width:5px;height:5px;border-radius:50%;background:var(--teal3);}
+
+@media(max-width:900px){
+  .hero-inner,.sim-grid,.articles-grid,.guides-grid,.avantages-grid,.cta-form,.footer{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  nav .nav-links{display:none;}
+  .articles-header{flex-direction:column;align-items:flex-start;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-dot"></div>Simulateurs gratuits</div>
+  <div class="trust-item"><div class="trust-dot"></div>Barèmes officiels belges</div>
+  <div class="trust-item"><div class="trust-dot"></div>Indépendant de toute banque</div>
+  <div class="trust-item"><div class="trust-dot"></div>Mis en relation avec un courtier sous 24h</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Wiki<span>Loan</span></div>
+  <div class="nav-links">
+    <a href="#simulateurs">Simulateurs</a>
+    <a href="#articles">Articles</a>
+    <a href="#guides">Guides pratiques</a>
+    <a href="https://drmortgage.be" class="nav-pro">Vous êtes professionnel ?</a>
+    <a href="#contact" class="nav-sim">Parler à un expert</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-kicker">Le portail du crédit hypothécaire belge</div>
+      <h1>Achetez votre bien<br>les <em>yeux ouverts</em></h1>
+      <p class="hero-sub">Simulateurs gratuits, guides pratiques et articles pour comprendre chaque étape de votre projet immobilier. De la simulation à la signature.</p>
+      <div class="hero-search">
+        <input class="hero-search-inp" id="search-inp" type="text" placeholder="Droits d'enregistrement Wallonie, capacité d'emprunt...">
+        <button class="hero-search-btn" onclick="heroSearch()">Rechercher →</button>
+      </div>
+      <div class="hero-tags">
+        <div class="hero-tag" onclick="jumpSim()">📊 Simuler mes frais</div>
+        <div class="hero-tag" onclick="jumpSim()">💰 Capacité d'emprunt</div>
+        <div class="hero-tag" onclick="jumpArticles()">📖 Préparer mon dossier</div>
+        <div class="hero-tag" onclick="jumpArticles()">🗺️ Où investir en Belgique</div>
+        <div class="hero-tag" onclick="jumpGuides()">✅ Checklist acheteur</div>
+      </div>
+    </div>
+
+    <!-- Mini sim card -->
+    <div class="hero-right">
+      <div class="hero-sim-card">
+        <div class="hero-sim-title">Simulation rapide</div>
+        <div class="hero-sim-sub">Mensualité estimée · Sans inscription</div>
+        <div class="hs-row">
+          <div class="hs-field">
+            <label class="hs-label">Prix du bien (€)</label>
+            <input class="hs-inp" type="number" id="hs-prix" value="280000" step="5000">
+          </div>
+          <div class="hs-field">
+            <label class="hs-label">Région</label>
+            <select class="hs-sel" id="hs-region">
+              <option>Wallonie</option>
+              <option>Bruxelles</option>
+              <option>Flandre</option>
+            </select>
+          </div>
+        </div>
+        <div class="hs-row">
+          <div class="hs-field">
+            <label class="hs-label">Durée</label>
+            <select class="hs-sel" id="hs-duree">
+              <option value="180">15 ans</option>
+              <option value="240">20 ans</option>
+              <option value="300" selected>25 ans</option>
+              <option value="360">30 ans</option>
+            </select>
+          </div>
+          <div class="hs-field">
+            <label class="hs-label">Taux (%)</label>
+            <input class="hs-inp" type="number" id="hs-taux" value="4.5" step="0.1">
+          </div>
+        </div>
+        <button class="hs-btn" onclick="heroSim()">Calculer ma mensualité →</button>
+        <div class="hs-result" id="hs-result">
+          <div class="hs-result-val" id="hs-val">—</div>
+          <div class="hs-result-sub">par mois · estimation · <a href="/simulateurs/credit" style="color:var(--teal2)">Simulation complète →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATEURS -->
+<div class="sim-section" id="simulateurs">
+  <div class="sim-inner">
+    <div class="kicker">Nos simulateurs</div>
+    <h2 class="h2">Calculez, comparez,<br>décidez en confiance</h2>
+    <p class="lead">Tous nos outils sont gratuits, sans inscription, et basés sur les barèmes en vigueur en Belgique.</p>
+    <div class="sim-grid">
+
+      <a href="/simulateurs/frais" class="sim-card">
+        <div class="sim-card-icon" style="background:#E0F4F4">🏛️</div>
+        <div class="sim-card-name">Frais d'acquisition</div>
+        <div class="sim-card-desc">Droits d'enregistrement, honoraires notaire, frais d'hypothèque — calculés selon votre région et votre profil.</div>
+        <span class="sim-card-tag tag-live">Disponible</span>
+        <div class="sim-card-arrow">→</div>
+      </a>
+
+      <a href="/simulateurs/credit" class="sim-card">
+        <div class="sim-card-icon" style="background:#E0F4F4">📊</div>
+        <div class="sim-card-name">Crédit par profil</div>
+        <div class="sim-card-desc">Mensualité, tableau d'amortissement, TAEG estimé — selon votre situation : premier achat, investisseur, vente-rachat…</div>
+        <span class="sim-card-tag tag-live">Disponible</span>
+        <div class="sim-card-arrow">→</div>
+      </a>
+
+      <div class="sim-card soon">
+        <div class="sim-card-icon" style="background:#F0EEE8">💪</div>
+        <div class="sim-card-name">Capacité d'emprunt</div>
+        <div class="sim-card-desc">Sur base de votre revenu, votre apport ou votre patrimoine. Sachez ce que vous pouvez emprunter avant de visiter.</div>
+        <span class="sim-card-tag tag-soon">Bientôt disponible</span>
+      </div>
+
+      <div class="sim-card soon">
+        <div class="sim-card-icon" style="background:#F0EEE8">⚖️</div>
+        <div class="sim-card-name">Comparateur de taux</div>
+        <div class="sim-card-desc">Comparez les offres de Belfius, Elantis, Krefima, HelloBank selon votre profil en temps réel.</div>
+        <span class="sim-card-tag tag-soon">Bientôt disponible</span>
+      </div>
+
+      <div class="sim-card soon">
+        <div class="sim-card-icon" style="background:#F0EEE8">🏘️</div>
+        <div class="sim-card-name">Rendement locatif</div>
+        <div class="sim-card-desc">Calculez le rendement brut et net de votre investissement locatif. Cash flow mensuel, retour sur investissement.</div>
+        <span class="sim-card-tag tag-soon">Bientôt disponible</span>
+      </div>
+
+      <div class="sim-card soon">
+        <div class="sim-card-icon" style="background:#F0EEE8">🔄</div>
+        <div class="sim-card-name">Refinancement</div>
+        <div class="sim-card-desc">Vaut-il la peine de refinancer votre crédit actuel ? Calculez l'économie réalisable selon les taux du marché.</div>
+        <span class="sim-card-tag tag-soon">Bientôt disponible</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLES -->
+<div class="articles-section" id="articles">
+  <div class="articles-inner">
+    <div class="articles-header">
+      <div>
+        <div class="kicker">Derniers articles</div>
+        <h2 class="h2">S'informer avant<br>de se lancer</h2>
+      </div>
+      <a href="#" class="articles-see-all">Voir tous les articles →</a>
+    </div>
+    <div class="articles-grid">
+
+      <div class="article-card">
+        <div class="article-img" style="background:#E0F4F4">🏠</div>
+        <div class="article-body">
+          <div class="article-cat" style="color:var(--teal2)">Droits d'enregistrement</div>
+          <div class="article-title">Abattement wallon 2024 : qui peut en bénéficier ?</div>
+          <div class="article-excerpt">Les conditions ont évolué. On fait le point sur l'abattement de 40.000 € et les droits réduits à 6% en Wallonie.</div>
+          <div class="article-meta">
+            <span>8 min de lecture</span>
+            <a href="#" class="article-read">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-img" style="background:#FDF3E0">📋</div>
+        <div class="article-body">
+          <div class="article-cat" style="color:var(--amber)">Dossier de crédit</div>
+          <div class="article-title">Les 12 documents indispensables pour votre demande de crédit</div>
+          <div class="article-excerpt">Fiche de salaire, avis d'imposition, compromis… Ne vous présentez pas à la banque sans cette liste.</div>
+          <div class="article-meta">
+            <span>6 min de lecture</span>
+            <a href="#" class="article-read">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-img" style="background:#E8EDF5">🗺️</div>
+        <div class="article-body">
+          <div class="article-cat" style="color:var(--ink2)">Investissement</div>
+          <div class="article-title">Où investir en Belgique en 2024 : les villes à fort potentiel</div>
+          <div class="article-excerpt">Liège, Charleroi, Namur ou Gand ? Analyse des rendements locatifs bruts par ville et type de bien.</div>
+          <div class="article-meta">
+            <span>12 min de lecture</span>
+            <a href="#" class="article-read">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- GUIDES -->
+<div class="guides-section" id="guides">
+  <div class="guides-inner">
+    <div class="kicker">Guides pratiques</div>
+    <h2 class="h2">Les essentiels pour<br>chaque étape</h2>
+    <p class="lead">Des guides clairs, structurés, sans jargon. Du premier projet à la signature de l'acte.</p>
+    <div class="guides-grid">
+      <a href="#" class="guide-card">
+        <div class="guide-icon">🔍</div>
+        <div>
+          <div class="guide-title">Comment évaluer un bien immobilier ?</div>
+          <div class="guide-desc">Critères, méthodes, erreurs à éviter</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-icon">🏦</div>
+        <div>
+          <div class="guide-title">Comprendre le TAEG et les coûts réels du crédit</div>
+          <div class="guide-desc">Au-delà du taux affiché</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-icon">✅</div>
+        <div>
+          <div class="guide-title">Checklist : préparer son dossier de crédit</div>
+          <div class="guide-desc">La liste complète, téléchargeable</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-icon">🤝</div>
+        <div>
+          <div class="guide-title">Courtier ou banque directement : que choisir ?</div>
+          <div class="guide-desc">Avantages, coûts, indépendance</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-icon">📜</div>
+        <div>
+          <div class="guide-title">Le compromis de vente expliqué</div>
+          <div class="guide-desc">Clauses, délais, conditions suspensives</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+      <a href="#" class="guide-card">
+        <div class="guide-icon">💡</div>
+        <div>
+          <div class="guide-title">Primes et aides à la rénovation en Belgique</div>
+          <div class="guide-desc">Région par région, 2024</div>
+        </div>
+        <div class="guide-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- AVANTAGES PARTENAIRES -->
+<div class="avantages-section">
+  <div class="avantages-inner">
+    <div class="kicker">Avantages exclusifs</div>
+    <h2 class="h2" style="color:var(--white)">Des services à conditions<br>préférentielles</h2>
+    <p class="lead">Parce qu'acheter un bien c'est aussi s'installer. Nos partenaires vous offrent des conditions négociées.</p>
+    <div class="avantages-grid">
+      <div class="avantage-card">
+        <div class="avantage-icon">⚡</div>
+        <div class="avantage-title">Énergie à prix réduit</div>
+        <div class="avantage-desc">Offres gaz et électricité négociées pour les nouveaux propriétaires. Économisez dès le premier mois dans votre nouveau logement.</div>
+        <span class="avantage-tag">Bientôt disponible</span>
+      </div>
+      <div class="avantage-card">
+        <div class="avantage-icon">🌐</div>
+        <div class="avantage-title">Internet & TV</div>
+        <div class="avantage-desc">Abonnements internet fibre et TV à tarifs préférentiels. Comparateur multi-opérateurs intégré selon votre adresse.</div>
+        <span class="avantage-tag">Bientôt disponible</span>
+      </div>
+      <div class="avantage-card">
+        <div class="avantage-icon">🏠</div>
+        <div class="avantage-title">Assurance habitation</div>
+        <div class="avantage-desc">Couverture incendie, RC, vol — comparées et souscrites en ligne. Exigée par votre banque, facilitée par WikiLoan.</div>
+        <span class="avantage-tag">Bientôt disponible</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEAD CTA -->
+<div class="cta-section" id="contact">
+  <div class="cta-card">
+    <div id="cta-form-wrap">
+      <div style="font-size:32px;margin-bottom:12px">👋</div>
+      <div class="cta-title">Prêt à passer à l'action ?</div>
+      <div class="cta-sub">Un courtier indépendant analyse votre situation et vous trouve la meilleure offre. Gratuit, sans engagement.</div>
+      <div class="cta-form">
+        <div>
+          <label class="field-lbl" style="color:var(--ink4)">Prénom</label>
+          <input class="field-inp" type="text" id="cta-prenom" placeholder="Marie">
+        </div>
+        <div>
+          <label class="field-lbl" style="color:var(--ink4)">Téléphone</label>
+          <input class="field-inp" type="tel" id="cta-tel" placeholder="+32 4xx xx xx xx">
+        </div>
+        <div class="full">
+          <label class="field-lbl" style="color:var(--ink4)">Email</label>
+          <input class="field-inp" type="email" id="cta-email" placeholder="marie@email.com">
+        </div>
+        <div class="full">
+          <label class="field-lbl" style="color:var(--ink4)">Votre projet</label>
+          <select class="field-sel" id="cta-projet">
+            <option value="">Sélectionnez...</option>
+            <option>Premier achat</option>
+            <option>Investissement locatif</option>
+            <option>Agrandissement</option>
+            <option>Vente et rachat</option>
+            <option>Refinancement</option>
+          </select>
+        </div>
+        <div class="full">
+          <button class="hs-btn" onclick="submitCTA()" style="margin-top:0">Être mis en relation gratuitement →</button>
+        </div>
+      </div>
+      <div class="cta-trust">🔒 Vos données sont confidentielles · RGPD · Jamais revendues</div>
+    </div>
+    <div class="cta-success" id="cta-success">
+      <div class="cta-success-icon">✅</div>
+      <div class="cta-success-title">Demande reçue !</div>
+      <div class="cta-success-text">Un courtier expert vous contacte sous 24h ouvrables pour analyser votre dossier et trouver la meilleure offre du marché.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-col">
+    <div class="footer-logo">Wiki<span>Loan</span></div>
+    <div class="footer-tagline">Le portail indépendant du crédit hypothécaire belge. Simulateurs gratuits, guides pratiques, mise en relation avec des courtiers certifiés.</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.25)">Une initiative <a href="https://drmortgage.be" style="color:rgba(255,255,255,.35);text-decoration:none">DrMortgage</a></div>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Simulateurs</div>
+    <div class="footer-links">
+      <a href="/simulateurs/frais">Frais d'acquisition</a>
+      <a href="/simulateurs/credit">Crédit par profil</a>
+      <a href="#">Capacité d'emprunt (bientôt)</a>
+      <a href="#">Comparateur de taux (bientôt)</a>
+      <a href="#">Rendement locatif (bientôt)</a>
+    </div>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Ressources</div>
+    <div class="footer-links">
+      <a href="#">Articles</a>
+      <a href="#">Guides pratiques</a>
+      <a href="#">Checklist acheteur</a>
+      <a href="https://drmortgage.be">Espace professionnels</a>
+      <a href="/admin/" style="opacity:.15">Admin</a>
+    </div>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2024 WikiLoan · Simulation à titre indicatif, non contractuelle</span>
+  <div style="display:flex;gap:16px">
+    <a href="#">Mentions légales</a>
+    <a href="#">Confidentialité</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+
+<script>
+function heroSim() {
+  const prix = +document.getElementById('hs-prix').value || 280000;
+  const mois = +document.getElementById('hs-duree').value || 300;
+  const taux = +document.getElementById('hs-taux').value / 100 || 0.045;
+  const r = taux / 12;
+  const mens = r === 0 ? prix / mois : prix * r / (1 - Math.pow(1 + r, -mois));
+  document.getElementById('hs-val').textContent = Math.round(mens).toLocaleString('fr-BE') + ' €';
+  document.getElementById('hs-result').style.display = 'block';
+}
+function heroSearch() {
+  const q = document.getElementById('search-inp').value.trim();
+  if (q) alert('Recherche "' + q + '" — fonctionnalité à connecter à votre moteur de contenu.');
+}
+function jumpSim() { document.getElementById('simulateurs').scrollIntoView({ behavior: 'smooth' }); }
+function jumpArticles() { document.getElementById('articles').scrollIntoView({ behavior: 'smooth' }); }
+function jumpGuides() { document.getElementById('guides').scrollIntoView({ behavior: 'smooth' }); }
+
+function submitCTA() {
+  const prenom = document.getElementById('cta-prenom').value.trim();
+  const email = document.getElementById('cta-email').value.trim();
+  const tel = document.getElementById('cta-tel').value.trim();
+  if (!prenom || !email) { alert('Veuillez remplir prénom et email.'); return; }
+  const lead = {
+    prenom, email, tel,
+    projet: document.getElementById('cta-projet').value,
+    source: 'WikiLoan',
+    timestamp: new Date().toISOString()
+  };
+  const leads = JSON.parse(localStorage.getItem('wikiloan_leads') || '[]');
+  leads.push(lead);
+  localStorage.setItem('wikiloan_leads', JSON.stringify(leads));
+  console.log('WikiLoan Lead:', lead);
+  document.getElementById('cta-form-wrap').style.display = 'none';
+  document.getElementById('cta-success').style.display = 'block';
+}
+</script>
+</body>
+</html>

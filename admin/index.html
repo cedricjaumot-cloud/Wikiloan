@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · ImmoFinance Backoffice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0f14;--bg2:#13161d;--bg3:#1a1e28;--bg4:#222736;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --accent:#e8b84b;--accent2:#f0ca72;--accent-dim:rgba(232,184,75,0.12);--accent-dim2:rgba(232,184,75,0.22);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5854;
+  --green:#4ade80;--green-dim:rgba(74,222,128,0.1);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.1);
+  --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.1);
+  --radius:6px;--radius-lg:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;}
+.login-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);}
+.login-box{position:relative;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:48px 40px;width:380px;}
+.login-logo{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
+.login-title{font-size:26px;font-weight:700;color:var(--text);margin-bottom:32px;line-height:1.2;}
+.login-field{margin-bottom:16px;}
+.login-label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.login-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s;}
+.login-input:focus{border-color:var(--accent);}
+.login-btn{width:100%;margin-top:8px;padding:12px;background:var(--accent);color:#0d0f14;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.login-btn:hover{background:var(--accent2);}
+.login-error{margin-top:12px;padding:8px 12px;background:var(--red-dim);border:1px solid rgba(248,113,113,.25);border-radius:var(--radius);color:var(--red);font-size:12px;font-family:'JetBrains Mono',monospace;display:none;}
+
+/* APP */
+#app{display:none;min-height:100vh;}
+.topbar{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:20px;position:sticky;top:0;z-index:50;}
+.topbar-logo{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;flex-shrink:0;}
+.topbar-sep{width:1px;height:20px;background:var(--border2);}
+.topbar-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.status-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+.status-dot.red{background:var(--red);animation:none;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.save-btn{padding:7px 18px;background:var(--accent);color:#0d0f14;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .18s;}
+.save-btn:hover{background:var(--accent2);}
+.save-btn.saved{background:var(--green);color:#0d0f14;}
+.logout-btn{padding:6px 14px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text2);font-family:'Syne',sans-serif;font-size:12px;cursor:pointer;transition:border-color .18s,color .18s;}
+.logout-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* TABS */
+.tabs{display:flex;gap:2px;padding:16px 24px 0;border-bottom:1px solid var(--border);background:var(--bg2);}
+.tab{padding:10px 20px;border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);border:1px solid transparent;border-bottom:none;transition:color .18s;letter-spacing:.04em;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--accent);background:var(--bg);border-color:var(--border2);border-bottom-color:var(--bg);margin-bottom:-1px;}
+
+/* CONTENT */
+.content{padding:32px 24px;max-width:1100px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:20px;overflow:hidden;}
+.card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;}
+.card-title-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;}
+.card-body{padding:20px;}
+
+/* SECTIONS */
+.section-header{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;}
+.section-title{font-size:18px;font-weight:700;color:var(--text);}
+.section-badge{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-family:'JetBrains Mono',monospace;background:var(--accent-dim);border:1px solid rgba(232,184,75,.2);padding:3px 8px;border-radius:3px;}
+.section-desc{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6;}
+
+/* FIELDS */
+.field-grid{display:grid;gap:16px;}
+.field-grid-2{grid-template-columns:1fr 1fr;}
+.field-grid-3{grid-template-columns:1fr 1fr 1fr;}
+.field-grid-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.field-label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;padding:9px 12px;outline:none;transition:border-color .18s;-moz-appearance:textfield;}
+.field-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.field-input:focus{border-color:var(--accent);background:var(--bg4);}
+.field-note{font-size:11px;color:var(--text3);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+
+/* TABLES */
+.table-editor{width:100%;border-collapse:collapse;font-size:13px;}
+.table-editor th{text-align:left;padding:10px 14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--border);font-weight:400;}
+.table-editor td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.table-editor tr:last-child td{border-bottom:none;}
+.table-editor tr:hover td{background:var(--bg3);}
+.table-input{background:transparent;border:1px solid transparent;border-radius:4px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 8px;width:100%;outline:none;transition:border-color .15s,background .15s;-moz-appearance:textfield;}
+.table-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.table-input:focus{border-color:var(--accent);background:var(--bg4);}
+.del-btn{background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--text3);padding:4px 10px;cursor:pointer;font-size:12px;font-family:'JetBrains Mono',monospace;transition:border-color .15s,color .15s;}
+.del-btn:hover{border-color:var(--red);color:var(--red);}
+.add-row-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;background:var(--accent-dim);border:1px dashed rgba(232,184,75,.3);border-radius:var(--radius);color:var(--accent);cursor:pointer;font-size:12px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.06em;margin-top:12px;transition:background .18s;width:100%;}
+.add-row-btn:hover{background:var(--accent-dim2);}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-family:'JetBrains Mono',monospace;}
+.tag-green{background:var(--green-dim);color:var(--green);}
+.tag-red{background:var(--red-dim);color:var(--red);}
+.tag-blue{background:var(--blue-dim);color:var(--blue);}
+.tag-gold{background:var(--accent-dim);color:var(--accent);}
+
+/* REGION TABS */
+.region-tabs{display:flex;gap:6px;margin-bottom:20px;}
+.rtab{padding:7px 16px;border-radius:var(--radius);border:1px solid var(--border2);cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);background:var(--bg3);transition:all .18s;}
+.rtab:hover{color:var(--text);border-color:var(--accent);}
+.rtab.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+.stat-tile{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;}
+.stat-tile-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
+.stat-tile-val{font-size:26px;font-weight:700;color:var(--accent);}
+.stat-tile-sub{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+
+/* LEADS TABLE */
+.leads-table{width:100%;border-collapse:collapse;font-size:13px;}
+.leads-table th{text-align:left;padding:10px 14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--border);font-weight:400;}
+.leads-table td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.leads-table tr:hover td{background:var(--bg3);}
+.leads-table tr:last-child td{border-bottom:none;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--green);border-radius:var(--radius);padding:12px 20px;color:var(--green);font-size:13px;font-family:'JetBrains Mono',monospace;transform:translateY(60px);opacity:0;transition:transform .3s,opacity .3s;z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.error{border-color:var(--red);color:var(--red);}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-grid"></div>
+  <div class="login-box">
+    <div class="login-logo">ImmoFinance · Admin Central</div>
+    <div class="login-title">Backoffice<br>centralisé</div>
+    <div class="login-field">
+      <label class="login-label">Identifiant</label>
+      <input class="login-input" id="inp-user" type="text" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label class="login-label">Mot de passe</label>
+      <input class="login-input" id="inp-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="tryLogin()">Accéder →</button>
+    <div class="login-error" id="login-error">Identifiants incorrects.</div>
+    <p style="margin-top:20px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;">
+      Données centralisées dans Supabase · WikiLoan + DrMortgage
+    </p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">⬡ ImmoFinance Admin</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-status">
+      <div class="status-dot" id="db-dot"></div>
+      <span id="db-status">Connexion Supabase...</span>
+    </div>
+    <div class="topbar-right">
+      <button class="save-btn" id="save-btn" onclick="saveAll()">Sauvegarder</button>
+      <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('leads')">Dashboard leads</div>
+    <div class="tab" onclick="switchTab('frais')">Frais d'acquisition</div>
+    <div class="tab" onclick="switchTab('taux')">Grilles de taux</div>
+    <div class="tab" onclick="switchTab('odoo')">Connexion Odoo</div>
+  </div>
+
+  <div class="content">
+
+    <!-- LEADS -->
+    <div class="tab-panel active" id="panel-leads">
+      <div class="section-header">
+        <div class="section-title">Dashboard leads</div>
+        <div class="section-badge">Supabase Live</div>
+      </div>
+      <p class="section-desc">Leads reçus depuis WikiLoan et DrMortgage — synchronisés en temps réel depuis Supabase.</p>
+      <div class="stats-row">
+        <div class="stat-tile"><div class="stat-tile-label">Leads WikiLoan</div><div class="stat-tile-val" id="stat-wl">—</div><div class="stat-tile-sub">Total</div></div>
+        <div class="stat-tile"><div class="stat-tile-label">Leads DrMortgage</div><div class="stat-tile-val" id="stat-dm">—</div><div class="stat-tile-sub">Total B2B</div></div>
+        <div class="stat-tile"><div class="stat-tile-label">Simulations</div><div class="stat-tile-val" id="stat-sim">—</div><div class="stat-tile-sub">Anonymes</div></div>
+        <div class="stat-tile"><div class="stat-tile-label">Total leads</div><div class="stat-tile-val" id="stat-total">—</div><div class="stat-tile-sub">Tous sites</div></div>
+      </div>
+
+      <!-- Tabs WikiLoan / DrMortgage -->
+      <div class="region-tabs">
+        <div class="rtab active" onclick="switchLeadsTab('wl',this)">WikiLoan</div>
+        <div class="rtab" onclick="switchLeadsTab('dm',this)">DrMortgage B2B</div>
+      </div>
+
+      <div class="card" id="leads-wl-panel">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Leads WikiLoan</div><span class="tag tag-green">Particuliers</span></div>
+        <div style="overflow-x:auto"><table class="leads-table" id="wl-leads-table">
+          <thead><tr><th>Date</th><th>Prénom</th><th>Email</th><th>Téléphone</th><th>Projet</th><th>Région</th><th>Budget</th><th>Mensualité</th></tr></thead>
+          <tbody id="wl-leads-body"><tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">Chargement...</td></tr></tbody>
+        </table></div>
+      </div>
+
+      <div class="card" id="leads-dm-panel" style="display:none">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Leads DrMortgage B2B</div><span class="tag tag-blue">Professionnels</span></div>
+        <div style="overflow-x:auto"><table class="leads-table">
+          <thead><tr><th>Date</th><th>Prénom</th><th>Email</th><th>Société</th><th>Type</th><th>Intérêt</th></tr></thead>
+          <tbody id="dm-leads-body"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">Chargement...</td></tr></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- FRAIS -->
+    <div class="tab-panel" id="panel-frais">
+      <div class="section-header">
+        <div class="section-title">Frais d'acquisition</div>
+        <div class="section-badge">Supabase</div>
+      </div>
+      <p class="section-desc">Ces valeurs sont stockées dans Supabase et lues par WikiLoan ET DrMortgage. Une seule modification s'applique aux deux sites.</p>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Droits d'enregistrement par région</div></div>
+        <div class="card-body">
+          <div class="region-tabs">
+            <div class="rtab active" onclick="switchRegion('wal',this)">Wallonie</div>
+            <div class="rtab" onclick="switchRegion('bxl',this)">Bruxelles</div>
+            <div class="rtab" onclick="switchRegion('vla',this)">Flandre</div>
+          </div>
+          <div id="de-wal">
+            <div class="field-grid field-grid-4">
+              <div><label class="field-label">Taux normal (%)</label><input class="field-input" type="number" id="de_wal_normal" step="0.1"><div class="field-note">% sur le prix</div></div>
+              <div><label class="field-label">Taux réduit (%)</label><input class="field-input" type="number" id="de_wal_reduit" step="0.1"></div>
+              <div><label class="field-label">Plafond DR (€)</label><input class="field-input" type="number" id="de_wal_plafond" step="1"></div>
+              <div><label class="field-label">Abattement (€)</label><input class="field-input" type="number" id="de_wal_abatt" step="1000"></div>
+            </div>
+          </div>
+          <div id="de-bxl" style="display:none">
+            <div class="field-grid field-grid-4">
+              <div><label class="field-label">Taux normal (%)</label><input class="field-input" type="number" id="de_bxl_normal" step="0.1"></div>
+              <div><label class="field-label">Abattement (€)</label><input class="field-input" type="number" id="de_bxl_abatt" step="1000"></div>
+            </div>
+          </div>
+          <div id="de-vla" style="display:none">
+            <div class="field-grid field-grid-4">
+              <div><label class="field-label">Taux normal (%)</label><input class="field-input" type="number" id="de_vla_normal" step="0.1"></div>
+              <div><label class="field-label">Taux réduit (%)</label><input class="field-input" type="number" id="de_vla_reduit" step="0.1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Barème notaire</div><button class="add-row-btn" style="width:auto;margin:0;padding:6px 14px" onclick="addNotaireRow()">+ Tranche</button></div>
+        <div style="overflow-x:auto"><table class="table-editor"><thead><tr><th>De (€)</th><th>À (€)</th><th>Taux (%)</th><th></th></tr></thead><tbody id="notaire-tbody"></tbody></table></div>
+        <div style="padding:16px 20px;border-top:1px solid var(--border)">
+          <div class="field-grid field-grid-4">
+            <div><label class="field-label">Frais fixes (€)</label><input class="field-input" type="number" id="nf_frais_fixes" step="1"></div>
+            <div><label class="field-label">Frais admin (€)</label><input class="field-input" type="number" id="nf_frais_admin" step="1"></div>
+            <div><label class="field-label">Débours (€)</label><input class="field-input" type="number" id="nf_debours" step="1"></div>
+            <div><label class="field-label">Droits écriture (€)</label><input class="field-input" type="number" id="nf_droits_ecriture" step="1"></div>
+            <div><label class="field-label">Droits annexes (€)</label><input class="field-input" type="number" id="nf_droits_annexes" step="1"></div>
+            <div><label class="field-label">Transcription (€)</label><input class="field-input" type="number" id="nf_transcription" step="1"></div>
+            <div><label class="field-label">Marge sécurité (€)</label><input class="field-input" type="number" id="nf_marge" step="1"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Barème hypothèque</div><button class="add-row-btn" style="width:auto;margin:0;padding:6px 14px" onclick="addHypRow()">+ Tranche</button></div>
+        <div style="overflow-x:auto"><table class="table-editor"><thead><tr><th>De (€)</th><th>À (€)</th><th>Taux (%)</th><th></th></tr></thead><tbody id="hyp-tbody"></tbody></table></div>
+        <div style="padding:16px 20px;border-top:1px solid var(--border)">
+          <div class="field-grid field-grid-4">
+            <div><label class="field-label">DE inscription (%)</label><input class="field-input" type="number" id="hf_de_inscription" step="0.01"></div>
+            <div><label class="field-label">Droits hyp (%)</label><input class="field-input" type="number" id="hf_droits_hyp" step="0.001"></div>
+            <div><label class="field-label">Frais dossier (€)</label><input class="field-input" type="number" id="hf_frais_dossier" step="10"></div>
+            <div><label class="field-label">Frais expertise (€)</label><input class="field-input" type="number" id="hf_frais_expertise" step="10"></div>
+            <div><label class="field-label">Assurance incendie (€/an)</label><input class="field-input" type="number" id="hf_assurance_incendie" step="10"></div>
+            <div><label class="field-label">Assurance décès (€/an)</label><input class="field-input" type="number" id="hf_assurance_deces" step="10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAUX -->
+    <div class="tab-panel" id="panel-taux">
+      <div class="section-header">
+        <div class="section-title">Grilles de taux</div>
+        <div class="section-badge">Supabase</div>
+      </div>
+      <p class="section-desc">Taux par établissement — modifiables ici, appliqués immédiatement sur les deux sites après sauvegarde.</p>
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Taux par établissement</div><button class="add-row-btn" style="width:auto;margin:0;padding:6px 14px" onclick="addTauxRow()">+ Ligne</button></div>
+        <div style="overflow-x:auto"><table class="table-editor">
+          <thead><tr><th>Établissement</th><th>Formule</th><th>Type taux</th><th>LTV max (%)</th><th>Taux (%)</th><th>Durée max (mois)</th><th>Persona</th><th>Actif</th><th></th></tr></thead>
+          <tbody id="taux-tbody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ODOO -->
+    <div class="tab-panel" id="panel-odoo">
+      <div class="section-header">
+        <div class="section-title">Connexion Odoo CRM</div>
+        <div class="section-badge">Webhook</div>
+      </div>
+      <p class="section-desc">Les leads WikiLoan et DrMortgage sont d'abord enregistrés dans Supabase, puis envoyés automatiquement dans Odoo.</p>
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Paramètres API Odoo</div><span id="odoo-tag" class="tag tag-red">Non configuré</span></div>
+        <div class="card-body">
+          <div class="field-grid field-grid-2">
+            <div><label class="field-label">URL instance Odoo</label><input class="field-input" type="text" id="odoo_url" placeholder="https://votre-instance.odoo.com"></div>
+            <div><label class="field-label">Database name</label><input class="field-input" type="text" id="odoo_db" placeholder="votre_database"></div>
+            <div><label class="field-label">Email utilisateur API</label><input class="field-input" type="email" id="odoo_user" placeholder="api@societe.be"></div>
+            <div><label class="field-label">Clé API</label><input class="field-input" type="password" id="odoo_key" placeholder="••••••••"></div>
+            <div><label class="field-label">Team ID</label><input class="field-input" type="number" id="odoo_team" value="1"></div>
+            <div><label class="field-label">Responsable ID</label><input class="field-input" type="number" id="odoo_resp" value="2"></div>
+          </div>
+          <div style="margin-top:20px;display:flex;gap:12px">
+            <button class="save-btn" onclick="testOdoo()" style="background:var(--blue);color:#0d0f14">Tester la connexion</button>
+            <button class="save-btn" onclick="saveOdoo()">Sauvegarder</button>
+          </div>
+          <div id="odoo-result" style="margin-top:14px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text2);display:none;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title"><div class="card-title-dot"></div>Flux de données</div></div>
+        <div class="card-body" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);line-height:2">
+          <p style="color:var(--accent);margin-bottom:8px">Comment les leads arrivent dans Odoo :</p>
+          <p>1. Visiteur remplit le formulaire sur WikiLoan ou DrMortgage</p>
+          <p>2. Lead enregistré dans Supabase (wikiloan_leads ou drmortgage_leads)</p>
+          <p>3. Lead envoyé automatiquement dans Odoo CRM via API REST</p>
+          <p>4. Tag "WikiLoan" ou "DrMortgage" ajouté automatiquement</p>
+          <p style="margin-top:12px;color:var(--text3)">Les leads sont conservés dans Supabase même si Odoo est indisponible.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ──
+const SUPABASE_URL = 'https://wldqogcrwynxpfvukspw.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_TNe6p0KVKawjxN6w4MGDsg_rftUdbj5';
+const CREDENTIALS = { user: 'admin', pass: 'immofinance2024' };
+
+// ── SUPABASE HELPER ──
+async function sb(table, method='GET', body=null, query='') {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
+    method,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': method==='POST' ? 'return=representation' : 'return=minimal'
+    },
+    body: body ? JSON.stringify(body) : null
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.status === 204 ? null : res.json();
+}
+
+// ── STATE ──
+let dbData = {};
+let notaireBareme = [], hypBareme = [], tauxRows = [];
+
+// ── LOGIN ──
+document.getElementById('inp-pass').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+function tryLogin() {
+  const u = document.getElementById('inp-user').value;
+  const p = document.getElementById('inp-pass').value;
+  if(u === CREDENTIALS.user && p === CREDENTIALS.pass) {
+    sessionStorage.setItem('admin_ok','1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+function logout() { sessionStorage.removeItem('admin_ok'); location.reload(); }
+if(sessionStorage.getItem('admin_ok')) {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  initApp();
+}
+
+// ── INIT ──
+async function initApp() {
+  try {
+    await Promise.all([loadDE(), loadNotaireBareme(), loadNotaireFixe(), loadHypBareme(), loadHypFixe(), loadTaux(), loadLeads()]);
+    document.getElementById('db-dot').className='status-dot';
+    document.getElementById('db-status').textContent='Supabase connecté ✓';
+    loadOdooConfig();
+  } catch(e) {
+    document.getElementById('db-dot').className='status-dot red';
+    document.getElementById('db-status').textContent='Erreur Supabase: ' + e.message;
+    showToast('Erreur connexion Supabase', true);
+  }
+}
+
+// ── TABS ──
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    ['leads','frais','taux','odoo'].forEach((n,j)=>{ if(i===j) t.classList.toggle('active', n===name); });
+  });
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+}
+function switchRegion(r,el) {
+  document.querySelectorAll('.rtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['wal','bxl','vla'].forEach(x=>document.getElementById('de-'+x).style.display = x===r?'block':'none');
+}
+function switchLeadsTab(tab, el) {
+  document.querySelectorAll('.region-tabs .rtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('leads-wl-panel').style.display = tab==='wl'?'block':'none';
+  document.getElementById('leads-dm-panel').style.display = tab==='dm'?'block':'none';
+}
+
+// ── LOAD DATA ──
+async function loadDE() {
+  const rows = await sb('acquisition_de','GET',null,'?select=*&order=region');
+  rows.forEach(r => {
+    if(r.region==='Wallonie') {
+      setVal('de_wal_normal', (r.taux_normal*100).toFixed(1));
+      setVal('de_wal_reduit', (r.taux_reduit*100).toFixed(1));
+      setVal('de_wal_plafond', r.plafond_dr);
+      setVal('de_wal_abatt', r.abattement);
+    } else if(r.region==='Bruxelles') {
+      setVal('de_bxl_normal', (r.taux_normal*100).toFixed(1));
+      setVal('de_bxl_abatt', r.abattement);
+    } else if(r.region==='Flandre') {
+      setVal('de_vla_normal', (r.taux_normal*100).toFixed(1));
+      setVal('de_vla_reduit', (r.taux_reduit*100).toFixed(1));
+    }
+    dbData['de_'+r.region.toLowerCase()] = r;
+  });
+}
+
+async function loadNotaireBareme() {
+  notaireBareme = await sb('acquisition_notaire_bareme','GET',null,'?select=*&order=ordre');
+  renderNotaire();
+}
+
+async function loadNotaireFixe() {
+  const rows = await sb('acquisition_notaire_fixe','GET',null,'?select=*');
+  const map = { 'Frais fixes':'nf_frais_fixes','Frais administratifs':'nf_frais_admin','Débours':'nf_debours','Droits écriture':'nf_droits_ecriture','Droits pour les annexes':'nf_droits_annexes','Transcription hypothèque':'nf_transcription','Marge sécurité':'nf_marge' };
+  rows.forEach(r => { if(map[r.label]) setVal(map[r.label], r.montant); });
+  dbData.notaire_fixe = rows;
+}
+
+async function loadHypBareme() {
+  hypBareme = await sb('acquisition_hyp_bareme','GET',null,'?select=*&order=ordre');
+  renderHyp();
+}
+
+async function loadHypFixe() {
+  const rows = await sb('acquisition_hyp_fixe','GET',null,'?select=*');
+  const map = { 'taux_de_inscription':'hf_de_inscription','taux_droits_hyp':'hf_droits_hyp','frais_dossier':'hf_frais_dossier','frais_expertise':'hf_frais_expertise','assurance_incendie':'hf_assurance_incendie','assurance_deces':'hf_assurance_deces' };
+  rows.forEach(r => {
+    if(map[r.label]) {
+      const v = r.label.startsWith('taux') ? (r.valeur*100).toFixed(r.label==='taux_droits_hyp'?3:2) : r.valeur;
+      setVal(map[r.label], v);
+    }
+  });
+  dbData.hyp_fixe = rows;
+}
+
+async function loadTaux() {
+  tauxRows = await sb('rate_grids','GET',null,'?select=*&order=persona,etablissement');
+  renderTaux();
+}
+
+async function loadLeads() {
+  const [wl, dm, sim] = await Promise.all([
+    sb('wikiloan_leads','GET',null,'?select=*&order=created_at.desc&limit=50'),
+    sb('drmortgage_leads','GET',null,'?select=*&order=created_at.desc&limit=50'),
+    sb('simulations_log','GET',null,'?select=count','')
+  ]);
+  document.getElementById('stat-wl').textContent = wl.length;
+  document.getElementById('stat-dm').textContent = dm.length;
+  document.getElementById('stat-total').textContent = wl.length + dm.length;
+
+  // WikiLoan leads table
+  document.getElementById('wl-leads-body').innerHTML = wl.length ? wl.map(l=>`
+    <tr>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--text2)">${new Date(l.created_at).toLocaleDateString('fr-BE')}</td>
+      <td style="font-weight:600">${l.prenom||''} ${l.nom||''}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)">${l.email}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${l.telephone||'—'}</td>
+      <td>${l.projet||'—'}</td>
+      <td>${l.region||'—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--accent)">${l.budget ? Math.round(l.budget).toLocaleString('fr-BE')+' €' : '—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--accent)">${l.simulation_mensualite ? Math.round(l.simulation_mensualite).toLocaleString('fr-BE')+' €' : '—'}</td>
+    </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">Aucun lead pour le moment</td></tr>';
+
+  // DrMortgage leads table
+  document.getElementById('dm-leads-body').innerHTML = dm.length ? dm.map(l=>`
+    <tr>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--text2)">${new Date(l.created_at).toLocaleDateString('fr-BE')}</td>
+      <td style="font-weight:600">${l.prenom||''} ${l.nom||''}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)">${l.email}</td>
+      <td>${l.societe||'—'}</td>
+      <td><span class="tag tag-blue">${l.type_professionnel||'—'}</span></td>
+      <td>${l.interet||'—'}</td>
+    </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">Aucun lead pour le moment</td></tr>';
+
+  // Simulations count
+  try {
+    const simCount = await sb('simulations_log','GET',null,'?select=id&limit=1000');
+    document.getElementById('stat-sim').textContent = simCount.length;
+  } catch(e) { document.getElementById('stat-sim').textContent = '—'; }
+}
+
+// ── RENDER TABLES ──
+function renderNotaire() {
+  document.getElementById('notaire-tbody').innerHTML = notaireBareme.map((r,i)=>`
+    <tr>
+      <td><input class="table-input" type="number" value="${r.tranche_min}" onchange="notaireBareme[${i}].tranche_min=+this.value"></td>
+      <td><input class="table-input" type="number" value="${r.tranche_max??''}" placeholder="—" onchange="notaireBareme[${i}].tranche_max=this.value?+this.value:null"></td>
+      <td><input class="table-input" type="number" value="${(r.taux*100).toFixed(3)}" step="0.001" onchange="notaireBareme[${i}].taux=+this.value/100"></td>
+      <td><button class="del-btn" onclick="notaireBareme.splice(${i},1);renderNotaire()">✕</button></td>
+    </tr>`).join('');
+}
+function addNotaireRow() { notaireBareme.push({tranche_min:0,tranche_max:null,taux:0,ordre:notaireBareme.length+1}); renderNotaire(); }
+
+function renderHyp() {
+  document.getElementById('hyp-tbody').innerHTML = hypBareme.map((r,i)=>`
+    <tr>
+      <td><input class="table-input" type="number" value="${r.tranche_min}" onchange="hypBareme[${i}].tranche_min=+this.value"></td>
+      <td><input class="table-input" type="number" value="${r.tranche_max??''}" placeholder="—" onchange="hypBareme[${i}].tranche_max=this.value?+this.value:null"></td>
+      <td><input class="table-input" type="number" value="${(r.taux*100).toFixed(3)}" step="0.001" onchange="hypBareme[${i}].taux=+this.value/100"></td>
+      <td><button class="del-btn" onclick="hypBareme.splice(${i},1);renderHyp()">✕</button></td>
+    </tr>`).join('');
+}
+function addHypRow() { hypBareme.push({tranche_min:0,tranche_max:null,taux:0,ordre:hypBareme.length+1}); renderHyp(); }
+
+function renderTaux() {
+  document.getElementById('taux-tbody').innerHTML = tauxRows.map((r,i)=>`
+    <tr>
+      <td><input class="table-input" value="${r.etablissement}" onchange="tauxRows[${i}].etablissement=this.value"></td>
+      <td><input class="table-input" value="${r.formule}" onchange="tauxRows[${i}].formule=this.value"></td>
+      <td><input class="table-input" value="${r.type_taux}" onchange="tauxRows[${i}].type_taux=this.value"></td>
+      <td><input class="table-input" type="number" value="${r.ltv_max*100}" step="5" onchange="tauxRows[${i}].ltv_max=+this.value/100"></td>
+      <td><input class="table-input" type="number" value="${(r.taux*100).toFixed(2)}" step="0.01" onchange="tauxRows[${i}].taux=+this.value/100"></td>
+      <td><input class="table-input" type="number" value="${r.duree_max_mois}" step="12" onchange="tauxRows[${i}].duree_max_mois=+this.value"></td>
+      <td><input class="table-input" value="${r.persona||''}" onchange="tauxRows[${i}].persona=this.value"></td>
+      <td style="text-align:center"><input type="checkbox" ${r.actif?'checked':''} onchange="tauxRows[${i}].actif=this.checked" style="accent-color:var(--accent);width:16px;height:16px;cursor:pointer"></td>
+      <td><button class="del-btn" onclick="tauxRows.splice(${i},1);renderTaux()">✕</button></td>
+    </tr>`).join('');
+}
+function addTauxRow() { tauxRows.push({etablissement:'',formule:'',type_taux:'Fixe',ltv_max:0.8,taux:0.04,duree_max_mois:300,persona:'',actif:true}); renderTaux(); }
+
+// ── SAVE ALL ──
+async function saveAll() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Sauvegarde...';
+  try {
+    await saveDE();
+    await saveNotaireBareme();
+    await saveHypBareme();
+    await saveTaux();
+    btn.textContent = '✓ Sauvegardé'; btn.classList.add('saved');
+    showToast('✓ Données sauvegardées dans Supabase');
+    setTimeout(()=>{ btn.textContent='Sauvegarder'; btn.classList.remove('saved'); }, 2500);
+  } catch(e) {
+    btn.textContent = 'Sauvegarder';
+    showToast('Erreur: ' + e.message, true);
+  }
+}
+
+async function saveDE() {
+  const regions = [
+    { region:'Wallonie', taux_normal:getVal('de_wal_normal')/100, taux_reduit:getVal('de_wal_reduit')/100, plafond_dr:getVal('de_wal_plafond'), abattement:getVal('de_wal_abatt') },
+    { region:'Bruxelles', taux_normal:getVal('de_bxl_normal')/100, taux_reduit:null, plafond_dr:null, abattement:getVal('de_bxl_abatt') },
+    { region:'Flandre', taux_normal:getVal('de_vla_normal')/100, taux_reduit:getVal('de_vla_reduit')/100, plafond_dr:null, abattement:0 },
+  ];
+  for(const r of regions) {
+    const existing = dbData['de_'+r.region.toLowerCase()];
+    if(existing) {
+      await sb(`acquisition_de?id=eq.${existing.id}`, 'PATCH', r);
+    }
+  }
+}
+
+async function saveNotaireBareme() {
+  await sb('acquisition_notaire_bareme', 'DELETE', null, '?id=gt.0');
+  for(let i=0; i<notaireBareme.length; i++) {
+    await sb('acquisition_notaire_bareme', 'POST', {...notaireBareme[i], id:undefined, ordre:i+1});
+  }
+}
+
+async function saveHypBareme() {
+  await sb('acquisition_hyp_bareme', 'DELETE', null, '?id=gt.0');
+  for(let i=0; i<hypBareme.length; i++) {
+    await sb('acquisition_hyp_bareme', 'POST', {...hypBareme[i], id:undefined, ordre:i+1});
+  }
+}
+
+async function saveTaux() {
+  await sb('rate_grids', 'DELETE', null, '?id=gt.0');
+  for(const r of tauxRows) {
+    await sb('rate_grids', 'POST', {...r, id:undefined, updated_at:undefined});
+  }
+}
+
+// ── ODOO ──
+function loadOdooConfig() {
+  const cfg = JSON.parse(localStorage.getItem('odoo_config')||'{}');
+  ['url','db','user','key','team','resp'].forEach(k => {
+    const el = document.getElementById('odoo_'+k);
+    if(el && cfg[k]) { el.value = cfg[k]; }
+  });
+  if(cfg.url) { document.getElementById('odoo-tag').className='tag tag-green'; document.getElementById('odoo-tag').textContent='Configuré'; }
+}
+function saveOdoo() {
+  const cfg = { url:document.getElementById('odoo_url').value, db:document.getElementById('odoo_db').value, user:document.getElementById('odoo_user').value, key:document.getElementById('odoo_key').value, team:document.getElementById('odoo_team').value, resp:document.getElementById('odoo_resp').value };
+  localStorage.setItem('odoo_config', JSON.stringify(cfg));
+  showToast('✓ Config Odoo sauvegardée');
+}
+async function testOdoo() {
+  const url = document.getElementById('odoo_url').value;
+  const el = document.getElementById('odoo-result');
+  el.style.display='block'; el.style.color='var(--text2)'; el.textContent='→ Test en cours...';
+  try {
+    const res = await fetch(`${url}/web/dataset/call_kw`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',method:'call',id:1,params:{model:'res.users',method:'search_read',args:[[]],kwargs:{fields:['name'],limit:1,context:{}}}})});
+    const d = await res.json();
+    if(d.result){el.style.color='var(--green)';el.textContent='✓ Connexion Odoo réussie';document.getElementById('odoo-tag').className='tag tag-green';document.getElementById('odoo-tag').textContent='Connecté ✓';}
+    else throw new Error(d.error?.message);
+  } catch(e){el.style.color='var(--red)';el.textContent='✗ Erreur: '+(e.message||'Vérifiez URL et clé API');}
+}
+
+// ── HELPERS ──
+function setVal(id, v) { const el=document.getElementById(id); if(el) el.value=v; }
+function getVal(id) { return parseFloat(document.getElementById(id)?.value)||0; }
+function showToast(msg, err=false) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(err?' error':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+document.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();saveAll();} });
+</script>
+</body>
+</html>
